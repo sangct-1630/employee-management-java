@@ -1,5 +1,6 @@
 package com.example.employee.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +21,9 @@ public class Employee {
     private String lastName;
     private String email;
     private String position;
+    
+    @Column(unique = true)
+    private String employeeCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
@@ -72,4 +76,13 @@ public class Employee {
     public void setDepartment(Department department) { 
     	this.department = department; 
 	}
+    
+    public String getEmployeeCode() { 
+    	return employeeCode; 
+	}
+    
+    public void setEmployeeCode(String employeeCode) { 
+    	this.employeeCode = employeeCode; 
+	}
+    
 }
