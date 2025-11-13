@@ -1,6 +1,7 @@
 package com.example.employee.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,4 +12,7 @@ import com.example.employee.model.Employee;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     
     List<Employee> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstName, String lastName);
+    
+    //"SELECT * FROM employees ORDER BY id DESC LIMIT 1"
+    Optional<Employee> findTopByOrderByIdDesc();
 }
