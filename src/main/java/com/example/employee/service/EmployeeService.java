@@ -1,12 +1,16 @@
 package com.example.employee.service;
 
 import com.example.employee.dto.EmployeeDTO;
+import com.example.employee.exception.ResourceNotFoundException;
 import com.example.employee.model.Department;
 import com.example.employee.model.Employee;
 import com.example.employee.repository.DepartmentRepository;
 import com.example.employee.repository.EmployeeRepository;
-import org.modelmapper.ModelMapper; 
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
     private final ModelMapper modelMapper;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public EmployeeService(
@@ -58,7 +63,7 @@ public class EmployeeService {
 
     public EmployeeDTO findById(Long id) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
         return convertToDto(employee);
     }
 
@@ -70,8 +75,10 @@ public class EmployeeService {
     }
 
     public EmployeeDTO update(Long id, EmployeeDTO dto) {
+        System.out.println("update");
+
         Employee existingEmployee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
         
         existingEmployee.setFirstName(dto.getFirstName());
         existingEmployee.setLastName(dto.getLastName());
@@ -137,5 +144,17 @@ public class EmployeeService {
         long newId = lastId + 1;
         
         return String.format("NV%03d", newId);
+    }
+    
+    @Cacheable("employeeCount") 
+    public long countEmployees() {
+        try {
+            Thread.sleep(2000); 
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        logger.info("-----> Đang truy vấn Database để đếm nhân viên...");
+        return employeeRepository.count();
     }
 }
