@@ -1,6 +1,7 @@
 package com.example.employee.model;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -57,4 +58,12 @@ public class User {
     public void setPassword(String password) { 
     	this.password = password; 
 	}
+
+    public Set<Role> getRoles() { 
+    	return roles; 
+	}
+    
+    public void setRoles(Set<Role> roles) { 
+        this.roles = roles; 
+    }
 }

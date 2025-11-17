@@ -22,6 +22,14 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
     
+    
+    public Role() {
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
+    
     // Getters and Setters
     public Long getId() { 
     	return id; 
@@ -37,5 +45,13 @@ public class Role {
     
     public void setName(String name) { 
     	this.name = name; 
+	}
+    
+    public Set<User> getUsers() { 
+    	return users; 
+	}
+    
+    public void setUsers(Set<User> users) { 
+    	this.users = users; 
 	}
 }
