@@ -1,6 +1,7 @@
 package com.example.employee.service;
 
 import com.example.employee.dto.EmployeeDTO;
+import com.example.employee.exception.ResourceNotFoundException;
 import com.example.employee.model.Department;
 import com.example.employee.model.Employee;
 import com.example.employee.repository.DepartmentRepository;
@@ -58,7 +59,7 @@ public class EmployeeService {
 
     public EmployeeDTO findById(Long id) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
         return convertToDto(employee);
     }
 
@@ -70,8 +71,10 @@ public class EmployeeService {
     }
 
     public EmployeeDTO update(Long id, EmployeeDTO dto) {
+        System.out.println("update");
+
         Employee existingEmployee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
         
         existingEmployee.setFirstName(dto.getFirstName());
         existingEmployee.setLastName(dto.getLastName());
