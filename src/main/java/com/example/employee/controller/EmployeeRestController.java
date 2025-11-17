@@ -55,4 +55,10 @@ public class EmployeeRestController {
         employeeService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/count")
+    public ResponseEntity<Long> countEmployees() {
+        long count = employeeService.countEmployees();
+        return ResponseEntity.ok(count);
+    }
 }
