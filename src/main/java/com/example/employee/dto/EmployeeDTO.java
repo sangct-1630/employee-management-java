@@ -1,10 +1,22 @@
 package com.example.employee.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class EmployeeDTO {
 
     private Long id;
+    @NotBlank(message = "First name is required")
+    @Size(min = 2, message = "First name must have at least 2 characters")
     private String firstName;
+
+    @NotBlank(message = "Last name is required")
     private String lastName;
+
+    // 2. Yêu cầu: Email hợp lệ
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email should be valid")
     private String email;
     private String position;
     private String employeeCode; 
