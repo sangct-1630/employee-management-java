@@ -2,6 +2,9 @@ package com.example.employee.controller;
 
 import com.example.employee.dto.EmployeeDTO;
 import com.example.employee.service.EmployeeService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +26,8 @@ public class EmployeeRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
-        try {
-            EmployeeDTO dto = employeeService.findById(id);
-            return ResponseEntity.ok(dto);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        EmployeeDTO dto = employeeService.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/search")
@@ -37,30 +36,29 @@ public class EmployeeRestController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         EmployeeDTO savedDto = employeeService.save(employeeDTO);
-        
+        System.out.println("post");
         return ResponseEntity.status(HttpStatus.CREATED).body(savedDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, 
-                                                      @RequestBody EmployeeDTO employeeDTO) {
-        try {
-            EmployeeDTO updatedDto = employeeService.update(id, employeeDTO);
-            return ResponseEntity.ok(updatedDto);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+		@Valid @RequestBody EmployeeDTO employeeDTO
+	) {
+        EmployeeDTO updatedDto = employeeService.update(id, employeeDTO);
+        return ResponseEntity.ok(updatedDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
-        try {
-            employeeService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        employeeService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("/count")
+    public ResponseEntity<Long> countEmployees() {
+        long count = employeeService.countEmployees();
+        return ResponseEntity.ok(count);
     }
 }
