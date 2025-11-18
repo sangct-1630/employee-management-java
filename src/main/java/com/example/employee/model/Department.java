@@ -23,6 +23,14 @@ public class Department {
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employee> employees = new ArrayList<>();
     
+    public Department() {
+    }
+
+    // Using seeder
+    public Department(String name) {
+        this.name = name;
+    }
+    
     // Getters and Setters
     public Long getId() { 
     	return id; 

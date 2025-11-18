@@ -1,5 +1,6 @@
 package com.example.employee.controller;
 
+import com.example.employee.dto.DepartmentStatDTO;
 import com.example.employee.dto.EmployeeDTO;
 import com.example.employee.service.EmployeeService;
 
@@ -60,5 +61,10 @@ public class EmployeeRestController {
     public ResponseEntity<Long> countEmployees() {
         long count = employeeService.countEmployees();
         return ResponseEntity.ok(count);
+    }
+    
+    @GetMapping("/stats/department")
+    public ResponseEntity<List<DepartmentStatDTO>> getStatsByDepartment() {
+        return ResponseEntity.ok(employeeService.getEmployeeStatsByDepartment());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.employee.service;
 
+import com.example.employee.dto.DepartmentStatDTO;
 import com.example.employee.dto.EmployeeDTO;
 import com.example.employee.exception.ResourceNotFoundException;
 import com.example.employee.model.Department;
@@ -156,5 +157,9 @@ public class EmployeeService {
         
         logger.info("-----> Đang truy vấn Database để đếm nhân viên...");
         return employeeRepository.count();
+    }
+    
+    public List<DepartmentStatDTO> getEmployeeStatsByDepartment() {
+        return employeeRepository.countEmployeesByDepartment();
     }
 }

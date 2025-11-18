@@ -67,4 +67,13 @@ public class EmployeeController {
         
         return "redirect:/";
     }
+    
+    @GetMapping("/statistics")
+    public String showStatistics(Model model) {
+        model.addAttribute("totalEmployees", employeeService.countEmployees());
+        
+        model.addAttribute("deptStats", employeeService.getEmployeeStatsByDepartment());
+        
+        return "statistics";
+    }
 }
